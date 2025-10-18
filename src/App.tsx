@@ -3,6 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './hooks/ThemeContext';
 import Home from './pages/Home';
 import About from './pages/About';
+import SIPCalculator from './pages/calculators/SIPCalculator';
+import EMICalculator from './pages/calculators/EMICalculator';
+import CAGRCalculator from './pages/calculators/CAGRCalculator';
+import PositionCalculator from './pages/calculators/PositionCalculator';
+import TargetStopLossCalculator from './pages/calculators/TargetStopLossCalculator';
 
 // Placeholder components for routes that don't have full pages yet
 const Services: React.FC = () => (
@@ -44,6 +49,11 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/calculator/sip" element={<SIPCalculator />} />
+            <Route path="/calculator/emi" element={<EMICalculator />} />
+            <Route path="/calculator/cagr" element={<CAGRCalculator />} />
+            <Route path="/calculator/position-sizing" element={<PositionCalculator />} />
+            <Route path="/calculator/target-stop-loss" element={<TargetStopLossCalculator />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

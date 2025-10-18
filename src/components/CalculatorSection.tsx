@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { 
   TrendingUp, 
   BarChart3, 
@@ -20,29 +21,33 @@ interface CalculatorCard {
   icon: React.ComponentType<{ className?: string }>;
   gradient: string;
   hoverGradient: string;
+  route?: string;
 }
 
 const calculators: CalculatorCard[] = [
   {
-    id: 'intraday-position',
-    name: 'Intraday Position Sizing Calculator',
+    id: 'target-stop-loss',
+    name: 'Target & Stop Loss Calculator',
     icon: TrendingUp,
     gradient: 'from-emerald-400 to-emerald-600',
-    hoverGradient: 'from-emerald-500 to-emerald-700'
+    hoverGradient: 'from-emerald-500 to-emerald-700',
+    route: '/calculator/target-stop-loss'
   },
   {
     id: 'swing-position',
     name: 'Swing Position Sizing Calculator',
     icon: BarChart3,
     gradient: 'from-blue-400 to-blue-600',
-    hoverGradient: 'from-blue-500 to-blue-700'
+    hoverGradient: 'from-blue-500 to-blue-700',
+    route: '/calculator/position-sizing'
   },
   {
     id: 'sip',
     name: 'SIP Calculator',
     icon: PiggyBank,
     gradient: 'from-green-400 to-green-600',
-    hoverGradient: 'from-green-500 to-green-700'
+    hoverGradient: 'from-green-500 to-green-700',
+    route: '/calculator/sip'
   },
   {
     id: 'lumpsum',
@@ -56,7 +61,8 @@ const calculators: CalculatorCard[] = [
     name: 'EMI Calculator',
     icon: CreditCard,
     gradient: 'from-purple-400 to-purple-600',
-    hoverGradient: 'from-purple-500 to-purple-700'
+    hoverGradient: 'from-purple-500 to-purple-700',
+    route: '/calculator/emi'
   },
   {
     id: 'goal-based',
@@ -70,7 +76,8 @@ const calculators: CalculatorCard[] = [
     name: 'CAGR Calculator',
     icon: Calculator,
     gradient: 'from-indigo-400 to-indigo-600',
-    hoverGradient: 'from-indigo-500 to-indigo-700'
+    hoverGradient: 'from-indigo-500 to-indigo-700',
+    route: '/calculator/cagr'
   },
   {
     id: 'car-buying',
@@ -152,15 +159,23 @@ const CalculatorSection: React.FC = () => {
                   </h3>
 
                   {/* Try It Button */}
-                  <button
-                    onClick={() => {
-                      // Placeholder for future navigation
-                      console.log(`Navigate to ${calculator.id} calculator`);
-                    }}
-                    className="inline-block bg-transparent border-2 border-gray-400 dark:border-gray-300 text-gray-700 dark:text-gray-200 font-medium py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:bg-gray-100/50 dark:hover:bg-gray-700/50 hover:border-gray-600 dark:hover:border-gray-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400/50 dark:focus:ring-gray-300/50"
-                  >
-                    Try It
-                  </button>
+                  {calculator.route ? (
+                    <Link
+                      to={calculator.route}
+                      className="inline-block bg-transparent border-2 border-gray-400 dark:border-gray-300 text-gray-700 dark:text-gray-200 font-medium py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:bg-gray-100/50 dark:hover:bg-gray-700/50 hover:border-gray-600 dark:hover:border-gray-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400/50 dark:focus:ring-gray-300/50"
+                    >
+                      Try It
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        console.log(`${calculator.name} calculator coming soon!`);
+                      }}
+                      className="inline-block bg-transparent border-2 border-gray-400 dark:border-gray-300 text-gray-700 dark:text-gray-200 font-medium py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:bg-gray-100/50 dark:hover:bg-gray-700/50 hover:border-gray-600 dark:hover:border-gray-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400/50 dark:focus:ring-gray-300/50"
+                    >
+                      Coming Soon
+                    </button>
+                  )}
                 </div>
 
                 {/* Subtle border glow on hover */}
