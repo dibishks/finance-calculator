@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Calculator } from 'lucide-react';
-import { CalculatorConfig } from '../../types/calculator';
+import type { CalculatorConfig } from '../../types/calculator';
 
 interface CalculatorLayoutProps {
   config: CalculatorConfig;

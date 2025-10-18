@@ -1,5 +1,5 @@
 import React from 'react';
-import { CalculatorInputConfig } from '../../types/calculator';
+import type { CalculatorInputConfig } from '../../types/calculator';
 
 interface CalculatorInputProps {
   input: CalculatorInputConfig;

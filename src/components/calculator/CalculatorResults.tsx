@@ -1,5 +1,5 @@
 import React from 'react';
-import { CalculatorResult } from '../../types/calculator';
+import type { CalculatorResult } from '../../types/calculator';
 
 interface CalculatorResultsProps {
   results: CalculatorResult[];
