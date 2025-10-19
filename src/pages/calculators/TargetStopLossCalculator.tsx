@@ -12,42 +12,48 @@ const TargetStopLossCalculator: React.FC = () => {
   // Initialize inputs with default values
   useEffect(() => {
     const initialInputs: Record<string, number | string> = {};
-    targetStopLossCalculatorConfig.inputs.forEach(input => {
-      initialInputs[input.id] = input.min || 0;
+    targetStopLossCalculatorConfig.inputs.forEach((input) => {
+      initialInputs[input.id] = '';
     });
     setInputs(initialInputs);
   }, []);
 
   const handleInputChange = (inputId: string, value: number | string) => {
-    setInputs(prev => ({ ...prev, [inputId]: value }));
-    
+    setInputs((prev) => ({ ...prev, [inputId]: value }));
+
     // Clear error for this input
     if (errors[inputId]) {
-      setErrors(prev => ({ ...prev, [inputId]: '' }));
+      setErrors((prev) => ({ ...prev, [inputId]: '' }));
     }
   };
 
   const validateInputs = (): boolean => {
     const newErrors: Record<string, string> = {};
-    
-    targetStopLossCalculatorConfig.inputs.forEach(input => {
+
+    targetStopLossCalculatorConfig.inputs.forEach((input) => {
       const value = inputs[input.id];
-      
-      if (input.required && (value === '' || value === 0)) {
+
+      if (
+        input.required &&
+        (value === '' || value === undefined || value === null)
+      ) {
         newErrors[input.id] = `${input.label} is required`;
         return;
       }
-      
-      if (typeof value === 'number') {
-        if (input.min !== undefined && value < input.min) {
+
+      // If value is a non-empty string, try to parse into a number for min/max checks
+      const numeric =
+        typeof value === 'number' ? value : parseFloat(value as string);
+      if (!isNaN(numeric)) {
+        if (input.min !== undefined && numeric < input.min) {
           newErrors[input.id] = `${input.label} must be at least ${input.min}`;
         }
-        if (input.max !== undefined && value > input.max) {
+        if (input.max !== undefined && numeric > input.max) {
           newErrors[input.id] = `${input.label} must be at most ${input.max}`;
         }
       }
     });
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -56,16 +62,17 @@ const TargetStopLossCalculator: React.FC = () => {
     if (!validateInputs()) {
       return;
     }
-    
+
     try {
       const numericInputs: Record<string, number> = {};
-      targetStopLossCalculatorConfig.inputs.forEach(input => {
-        numericInputs[input.id] = typeof inputs[input.id] === 'number' 
-          ? inputs[input.id] as number 
-          : parseFloat(inputs[input.id] as string) || 0;
+      targetStopLossCalculatorConfig.inputs.forEach((input) => {
+        const raw = inputs[input.id];
+        const num = typeof raw === 'number' ? raw : parseFloat(raw as string);
+        numericInputs[input.id] = isNaN(num) ? 0 : num;
       });
-      
-      const calculatedResults = targetStopLossCalculatorConfig.calculate(numericInputs);
+
+      const calculatedResults =
+        targetStopLossCalculatorConfig.calculate(numericInputs);
       setResults(calculatedResults);
     } catch (error) {
       console.error('Calculation error:', error);
@@ -74,8 +81,8 @@ const TargetStopLossCalculator: React.FC = () => {
 
   const handleReset = () => {
     const resetInputs: Record<string, number | string> = {};
-    targetStopLossCalculatorConfig.inputs.forEach(input => {
-      resetInputs[input.id] = input.min || 0;
+    targetStopLossCalculatorConfig.inputs.forEach((input) => {
+      resetInputs[input.id] = '';
     });
     setInputs(resetInputs);
     setResults(null);
@@ -90,19 +97,19 @@ const TargetStopLossCalculator: React.FC = () => {
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
             Enter Your Share Details
           </h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {targetStopLossCalculatorConfig.inputs.map((input) => (
               <CalculatorInput
                 key={input.id}
                 input={input}
-                value={inputs[input.id] || (input.min || 0)}
+                value={inputs[input.id] || input.min || 0}
                 onChange={(value) => handleInputChange(input.id, value)}
                 error={errors[input.id]}
               />
             ))}
           </div>
-          
+
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 mt-8">
             <button
@@ -121,9 +128,7 @@ const TargetStopLossCalculator: React.FC = () => {
         </div>
 
         {/* Results */}
-        {results && (
-          <TargetStopLossResults results={results} />
-        )}
+        {results && <TargetStopLossResults results={results} />}
       </div>
     </CalculatorLayout>
   );

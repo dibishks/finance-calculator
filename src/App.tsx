@@ -13,8 +13,12 @@ import TargetStopLossCalculator from './pages/calculators/TargetStopLossCalculat
 const Services: React.FC = () => (
   <div className="min-h-screen flex items-center justify-center">
     <div className="text-center">
-      <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Services</h1>
-      <p className="text-gray-600 dark:text-gray-300">Services page coming soon!</p>
+      <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        Services
+      </h1>
+      <p className="text-gray-600 dark:text-gray-300">
+        Services page coming soon!
+      </p>
     </div>
   </div>
 );
@@ -22,8 +26,12 @@ const Services: React.FC = () => (
 const Contact: React.FC = () => (
   <div className="min-h-screen flex items-center justify-center">
     <div className="text-center">
-      <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Contact</h1>
-      <p className="text-gray-600 dark:text-gray-300">Contact page coming soon!</p>
+      <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        Contact
+      </h1>
+      <p className="text-gray-600 dark:text-gray-300">
+        Contact page coming soon!
+      </p>
     </div>
   </div>
 );
@@ -31,10 +39,18 @@ const Contact: React.FC = () => (
 const NotFound: React.FC = () => (
   <div className="min-h-screen flex items-center justify-center">
     <div className="text-center">
-      <h1 className="text-6xl font-bold text-primary-600 dark:text-primary-400 mb-4">404</h1>
-      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Page Not Found</h2>
-      <p className="text-gray-600 dark:text-gray-300 mb-8">The page you're looking for doesn't exist.</p>
-      <a href="/" className="btn-primary">Go Home</a>
+      <h1 className="text-6xl font-bold text-primary-600 dark:text-primary-400 mb-4">
+        404
+      </h1>
+      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+        Page Not Found
+      </h2>
+      <p className="text-gray-600 dark:text-gray-300 mb-8">
+        The page you're looking for doesn't exist.
+      </p>
+      <a href="/" className="btn-primary">
+        Go Home
+      </a>
     </div>
   </div>
 );
@@ -42,7 +58,7 @@ const NotFound: React.FC = () => (
 function App() {
   return (
     <ThemeProvider>
-      <Router>
+      <Router basename={import.meta.env.BASE_URL}>
         <div className="App">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -52,8 +68,14 @@ function App() {
             <Route path="/calculator/sip" element={<SIPCalculator />} />
             <Route path="/calculator/emi" element={<EMICalculator />} />
             <Route path="/calculator/cagr" element={<CAGRCalculator />} />
-            <Route path="/calculator/position-sizing" element={<PositionCalculator />} />
-            <Route path="/calculator/target-stop-loss" element={<TargetStopLossCalculator />} />
+            <Route
+              path="/calculator/position-sizing"
+              element={<PositionCalculator />}
+            />
+            <Route
+              path="/calculator/target-stop-loss"
+              element={<TargetStopLossCalculator />}
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
