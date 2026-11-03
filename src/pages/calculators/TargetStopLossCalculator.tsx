@@ -103,7 +103,8 @@ const TargetStopLossCalculator: React.FC = () => {
               <CalculatorInput
                 key={input.id}
                 input={input}
-                value={inputs[input.id] || input.min || 0}
+                // preserve empty string (do not fallback to 0) so users can clear the field
+                value={inputs[input.id] ?? ''}
                 onChange={(value) => handleInputChange(input.id, value)}
                 error={errors[input.id]}
               />
