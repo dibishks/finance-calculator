@@ -13,11 +13,7 @@ const PositionCalculator: React.FC = () => {
   useEffect(() => {
     const initialInputs: Record<string, number | string> = {};
     positionCalculatorConfig.inputs.forEach(input => {
-      if (input.type === 'text') {
-        initialInputs[input.id] = '';
-      } else {
-        initialInputs[input.id] = input.min || 0;
-      }
+      initialInputs[input.id] = '';
     });
     setInputs(initialInputs);
   }, []);
@@ -37,16 +33,20 @@ const PositionCalculator: React.FC = () => {
     positionCalculatorConfig.inputs.forEach(input => {
       const value = inputs[input.id];
       
-      if (input.required && (value === '' || value === 0)) {
+      if (input.required && (value === '' || value === undefined || value === null)) {
         newErrors[input.id] = `${input.label} is required`;
         return;
       }
       
-      if (typeof value === 'number') {
-        if (input.min !== undefined && value < input.min) {
+      // Values are kept as raw strings while typing; parse for min/max checks
+      const numeric = typeof value === 'number' ? value : parseFloat(value as string);
+      if (isNaN(numeric)) {
+        newErrors[input.id] = `${input.label} must be a valid number`;
+      } else {
+        if (input.min !== undefined && numeric < input.min) {
           newErrors[input.id] = `${input.label} must be at least ${input.min}`;
         }
-        if (input.max !== undefined && value > input.max) {
+        if (input.max !== undefined && numeric > input.max) {
           newErrors[input.id] = `${input.label} must be at most ${input.max}`;
         }
       }
@@ -79,11 +79,7 @@ const PositionCalculator: React.FC = () => {
   const handleReset = () => {
     const resetInputs: Record<string, number | string> = {};
     positionCalculatorConfig.inputs.forEach(input => {
-      if (input.type === 'text') {
-        resetInputs[input.id] = '';
-      } else {
-        resetInputs[input.id] = input.min || 0;
-      }
+      resetInputs[input.id] = '';
     });
     setInputs(resetInputs);
     setResults([]);
@@ -104,7 +100,8 @@ const PositionCalculator: React.FC = () => {
               <CalculatorInput
                 key={input.id}
                 input={input}
-                value={inputs[input.id] || (input.type === 'text' ? '' : 0)}
+                // preserve empty string (do not fallback to 0) so users can clear the field
+                value={inputs[input.id] ?? ''}
                 onChange={(value) => handleInputChange(input.id, value)}
                 error={errors[input.id]}
               />
